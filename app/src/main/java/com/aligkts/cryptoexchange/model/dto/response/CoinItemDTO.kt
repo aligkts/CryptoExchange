@@ -2,8 +2,9 @@ package com.aligkts.cryptoexchange.model.dto.response
 
 
 import android.os.Parcelable
-import com.aligkts.cryptoexchange.R
-import com.aligkts.cryptoexchange.base.RecyclerViewItem
+import com.aligkts.cryptoexchange.extension.getCoinSpinnerSelectedIndex
+import com.aligkts.cryptoexchange.model.repository.GenericSecureRepository
+import com.aligkts.cryptoexchange.util.Constant
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
@@ -35,4 +36,42 @@ data class CoinItemDTO(
     val sell: String,
     @SerializedName("tke")
     val id: String
-) : RecyclerViewItem(R.layout.item_coin), Parcelable
+) : Parcelable {
+
+    fun getFirstSymbolData(): String {
+        return getRelatedFieldValue(Constant.FIRST_SYMBOL)
+    }
+
+    fun getSecondSymbolData(): String {
+        return getRelatedFieldValue(Constant.SECOND_SYMBOL)
+    }
+
+    fun getRelatedFieldValue(key: String): String {
+        return when (GenericSecureRepository.default.getString(key)?.getCoinSpinnerSelectedIndex()) {
+            0 -> {
+                buy
+            }
+            1 -> {
+                diff
+            }
+            2 -> {
+                high
+            }
+            3 -> {
+                last
+            }
+            4 -> {
+                low
+            }
+            5 -> {
+                closing
+            }
+            6 -> {
+                diff
+            }
+            else -> {
+                sell
+            }
+        }
+    }
+}
