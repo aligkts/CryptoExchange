@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.aligkts.cryptoexchange.model.dto.response.CoinItemDTO" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/colorPrimaryDark"
+        android:weightSum="4">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txt_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:maxLines="1"
+                android:text="@{item.code}"
+                android:textSize="15sp"
+                tools:text="ANSUSD:BFX" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txt_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:maxLines="1"
+                android:text="@{item.description}"
+                android:textSize="12sp"
+                tools:text="NEO Amerikan Doları" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_first_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            android:layout_weight="1"
+            android:text="@{item.buy}"
+            tools:text="7,272" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_second_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="@{item.sell}"
+            tools:text="0,0011" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

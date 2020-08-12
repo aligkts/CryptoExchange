@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Crypto Exchange</string>
+
+    <string name="done">Done</string>
+    <string name="cancel">Cancel</string>
+    <string name="please_wait">Please Wait</string>
+
+    <string name="bottom_item_home">Home</string>
+    <string name="bottom_item_favorites">Favorites</string>
+
+    <string name="error_dialog_title">Error</string>
+    <string name="error_general_message">Error occured. Please try again later.</string>
+
+</resources>
