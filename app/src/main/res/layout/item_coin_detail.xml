@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.aligkts.cryptoexchange.model.dto.response.DItem" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_margin="8dp"
+            android:text='@{item.desc ?? "-"}'
+            android:textStyle="bold"
+            android:textAllCaps="true"
+            app:layout_constraintEnd_toStartOf="@id/txt_value"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Canlı Veri" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text='@{item.clo ?? "-"}'
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="20:00:51" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_las_key"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_margin="8dp"
+            android:text="@string/title_last"
+            app:layout_constraintEnd_toStartOf="@id/txt_value"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_title" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_las_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text='@{item.fields.las ?? "-"}'
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_title"
+            tools:text="7.75" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_buy_key"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_margin="8dp"
+            android:text="@string/title_buy"
+            app:layout_constraintEnd_toStartOf="@id/txt_value"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_las_value" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_buy_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text='@{item.fields.buy ?? "-"}'
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_las_value"
+            tools:text="7.76" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_sell_key"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_margin="8dp"
+            android:text="@string/title_sell"
+            app:layout_constraintEnd_toStartOf="@id/txt_value"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_buy_value" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_sell_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text='@{item.fields.sel ?? "-"}'
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_buy_value"
+            tools:text="7.76" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_low_key"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_margin="8dp"
+            android:text="@string/title_low"
+            app:layout_constraintEnd_toStartOf="@id/txt_value"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_sell_value" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_low_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text='@{item.fields.low ?? "-"}'
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_sell_value"
+            tools:text="7.76" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_high_key"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_margin="8dp"
+            android:text="@string/title_high"
+            app:layout_constraintEnd_toStartOf="@id/txt_value"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_low_value" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_high_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text='@{item.fields.hig ?? "-"}'
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_low_value"
+            tools:text="7.76" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_ddi_key"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_margin="8dp"
+            android:text="@string/title_diff"
+            app:layout_constraintEnd_toStartOf="@id/txt_value"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_high_value" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_ddi_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text='@{item.fields.ddi ?? "-"}'
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_high_value"
+            tools:text="7.76" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_pdd_key"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_margin="8dp"
+            android:text="@string/title_diff_percentage"
+            app:layout_constraintEnd_toStartOf="@id/txt_value"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_ddi_value" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_pdd_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text='@{item.fields.pdd ?? "-"}'
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_ddi_value"
+            tools:text="7.76" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,6 +27,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as MainActivity).showBottomNavigationView()
+        (activity as MainActivity).supportActionBar?.title = getString(R.string.app_name)
         viewModel.getCoins()
         registerObservers()
         initSpinners()
@@ -77,7 +77,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     private fun setupCoinRecyclerview(coins: List<CoinItemDTO>) {
         val coinAdapter = CoinAdapter {
-            Toast.makeText(context, it.description, Toast.LENGTH_SHORT).show()
             val bundle = Bundle()
             bundle.putParcelable(Constant.DETAIL_DATA, it)
             findNavController().navigate(R.id.action_home_to_detail, bundle)
@@ -88,5 +87,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
         }
     }
+
+    /*fun loadData() = CoroutineScope(Dispatchers.Default).launch {
+        val task = async(Dispatchers.IO) {
+            get_top_books()
+        }
+        viewModel.coins.value = task.await()
+        binding.rvHome.adapter?.notifyDataSetChanged()
+    }*/
 
 }
