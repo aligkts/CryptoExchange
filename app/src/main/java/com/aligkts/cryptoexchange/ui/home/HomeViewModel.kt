@@ -7,6 +7,7 @@ import com.aligkts.cryptoexchange.R
 import com.aligkts.cryptoexchange.base.BaseViewModel
 import com.aligkts.cryptoexchange.model.dto.response.CoinItemDTO
 import com.aligkts.cryptoexchange.model.repository.CoinRepository
+import com.aligkts.cryptoexchange.model.repository.GenericSecureRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -16,6 +17,7 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
     val coins = MutableLiveData<ArrayList<CoinItemDTO>>()
 
     private val coinRepository: CoinRepository = CoinRepository.default
+    val genericSecureRepository: GenericSecureRepository = GenericSecureRepository.default
 
     fun getCoins() {
         viewModelScope.launch(Dispatchers.IO) {

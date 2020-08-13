@@ -10,10 +10,10 @@
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/container_coin_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/colorPrimaryDark"
         android:weightSum="4">
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:text="@{item.code}"
                 android:textSize="15sp"
                 tools:text="ANSUSD:BFX" />
@@ -37,10 +37,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:text="@{item.description}"
                 android:textSize="12sp"
                 tools:text="NEO Amerikan Doları" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txt_update_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:maxLines="2"
+                android:text="@{item.hour}"
+                android:textSize="12sp"
+                tools:text="18:25:11" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -48,9 +58,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:gravity="center"
             android:layout_margin="16dp"
             android:layout_weight="1"
-            android:text="@{item.buy}"
+            android:text="@{item.getFirstSymbolData()}"
             tools:text="7,272" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -58,8 +69,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:gravity="center"
             android:layout_weight="1"
-            android:text="@{item.sell}"
+            android:text="@{item.getSecondSymbolData()}"
             tools:text="0,0011" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>

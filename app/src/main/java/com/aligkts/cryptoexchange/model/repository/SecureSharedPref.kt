@@ -72,4 +72,8 @@ class SecureSharedPref(context: Context) : GenericSecureRepository {
     override fun remove(key: String) {
         sharedPreferences.edit().remove(key).apply()
     }
+
+    override fun contains(key: String): Boolean {
+        return sharedPreferences.contains(key)
+    }
 }

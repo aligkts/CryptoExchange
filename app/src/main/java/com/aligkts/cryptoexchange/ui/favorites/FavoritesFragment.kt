@@ -5,6 +5,7 @@ import android.view.View
 import com.aligkts.cryptoexchange.R
 import com.aligkts.cryptoexchange.base.BaseFragment
 import com.aligkts.cryptoexchange.databinding.FragmentFavoritesBinding
+import com.aligkts.cryptoexchange.ui.MainActivity
 
 class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoritesViewModel>() {
 
@@ -14,6 +15,7 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoritesViewMo
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as MainActivity).showBottomNavigationView()
     }
 
 }

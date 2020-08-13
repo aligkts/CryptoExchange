@@ -26,4 +26,5 @@ interface GenericSecureRepository {
     fun getFloat(key: String): Float?
 
     fun remove(key: String)
+    fun contains(key: String): Boolean
 }
