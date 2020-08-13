@@ -11,6 +11,13 @@
     <string name="error_dialog_title">Hata</string>
     <string name="error_general_message">Hata oluştu. Lütfen tekrar deneyiniz.</string>
     <string name="symbol">Sembol</string>
+    <string name="title_last">Son</string>
+    <string name="title_buy">Alış</string>
+    <string name="title_sell">Satış</string>
+    <string name="title_low">G. Düşük</string>
+    <string name="title_high">G. Yüksek</string>
+    <string name="title_diff">Fark</string>
+    <string name="title_diff_percentage">%Fark</string>
 
     <string-array name="CoinSpinnerItems">
         <item>Alış</item>
