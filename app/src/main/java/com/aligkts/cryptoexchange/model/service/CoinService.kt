@@ -3,6 +3,7 @@ package com.aligkts.cryptoexchange.model.service
 import com.aligkts.cryptoexchange.model.dto.response.CoinDetailDTO
 import com.aligkts.cryptoexchange.model.dto.response.CoinResponseDTO
 import com.aligkts.cryptoexchange.model.factory.RetrofitFactory
+import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -17,8 +18,14 @@ interface CoinService {
     }
 
     @GET("coin/list.php")
-    suspend fun getCoins(): CoinResponseDTO
+    fun getCoinsOld(): CoinResponseDTO
 
     @GET("coin/detail.php")
-    suspend fun getCoinDetails(@Query("cod") cod: String): CoinDetailDTO
+    fun getCoinDetailsOld(@Query("cod") cod: String): CoinDetailDTO
+
+    @GET("coin/list.php")
+    fun getCoins(): Single<CoinResponseDTO>
+
+    @GET("coin/detail.php")
+    fun getCoinDetails(@Query("cod") cod: String): Single<CoinDetailDTO>
 }

@@ -37,7 +37,7 @@ class DefaultCoinRepository(val coinService: CoinService = CoinService.default) 
         error: suspend (ErrorResponseDTO?) -> Unit
     ) {
 
-        when(val serviceResult = makeServiceRequest { coinService.getCoins() }) {
+        when(val serviceResult = makeServiceRequest { coinService.getCoinsOld() }) {
             is ServiceResult.Success -> {
                 coins = serviceResult.body.coins
                 completion(serviceResult.body.coins)
@@ -52,7 +52,7 @@ class DefaultCoinRepository(val coinService: CoinService = CoinService.default) 
         completion: suspend (CoinDetailDTO) -> Unit,
         error: suspend (ErrorResponseDTO?) -> Unit
     ) {
-        when(val serviceResult = makeServiceRequest { coinService.getCoinDetails(cod) }) {
+        when(val serviceResult = makeServiceRequest { coinService.getCoinDetailsOld(cod) }) {
             is ServiceResult.Success -> {
                 coinDetail = serviceResult.body
                 completion(serviceResult.body)
