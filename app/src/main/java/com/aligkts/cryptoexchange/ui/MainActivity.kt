@@ -13,13 +13,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        bottomNavigation.setOnNavigationItemSelectedListener {item ->
+        bottom_navigation.setOnNavigationItemSelectedListener { item ->
             onNavDestinationSelected(item, Navigation.findNavController(this, R.id.nav_host_fragment))
         }
     }
 
     fun hideBottomNavigationView() {
-        with(bottomNavigation) {
+        with(bottom_navigation) {
             if (visibility == View.VISIBLE && alpha == 1f) {
                 animate()
                     .alpha(0f)
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun showBottomNavigationView() {
-        with(bottomNavigation) {
+        with(bottom_navigation) {
             visibility = View.VISIBLE
             animate()
                 .alpha(1f)

@@ -1,53 +1,53 @@
 package com.aligkts.cryptoexchange.ui.home
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.aligkts.cryptoexchange.R
 import com.aligkts.cryptoexchange.base.BaseViewModel
 import com.aligkts.cryptoexchange.model.dto.response.CoinItemDTO
-import com.aligkts.cryptoexchange.model.dto.response.CoinResponseDTO
-import com.aligkts.cryptoexchange.model.repository.CoinRepository
+import com.aligkts.cryptoexchange.model.repository.DefaultCoinRepository
 import com.aligkts.cryptoexchange.model.repository.GenericSecureRepository
-import com.aligkts.cryptoexchange.model.service.CoinService
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import java.util.concurrent.TimeUnit
 
 class HomeViewModel(application: Application) : BaseViewModel(application) {
 
     val coins = MutableLiveData<ArrayList<CoinItemDTO>>()
 
-    private val coinRepository: CoinRepository = CoinRepository.default
-    val genericSecureRepository: GenericSecureRepository = GenericSecureRepository.default
+    private val coinRepository by lazy { DefaultCoinRepository() }
+    val genericSecureRepository by lazy { GenericSecureRepository.default }
 
-    private var coinValuesDisposable: Disposable? = null
+    private lateinit var coinValuesDisposable: Disposable
 
     fun startPeriodicCoinRequests() {
-        coinValuesDisposable =
-            Observable.interval(2, 2, TimeUnit.SECONDS)
+        /*coinValuesDisposable = rxInterval
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    { timer: Long? -> requestCoins() }
-                ) { throwable: Throwable ->
-                    Log.d("HomeViewModel", "Periodic Coin Request Timer Failed : $throwable")
-                }
+                .subscribe({ requestCoins() }) { throwable: Throwable ->
+                    errorHandler.handleError(throwable.message
+                        ?: getApplication<Application>().getString(R.string.error_general_message))
+                }*/
+        coinRepository.startPeriodicCoinRequest({
+            this@HomeViewModel.coins.value = it.coins
+        },{ throwable ->
+            stopPeriodicCoinRequests()
+            errorHandler.handleError(throwable.message
+                ?: getApplication<Application>().getString(R.string.error_general_message))
+        })
     }
 
     fun stopPeriodicCoinRequests() {
-        coinValuesDisposable?.dispose()
+        coinRepository.clearDisposable()
     }
 
     private fun requestCoins() {
-        compositeDisposable.add(CoinService.default.getCoins()
-            .compose(RxUtil.applyIOAndUISchedulerToSingle())
-            .subscribe(
-                { response: CoinResponseDTO? ->
+        /*compositeDisposable.add(CoinService.default.getCoins()
+            .compose(RxUtil.applyIOAndUIScheduler())
+            .subscribe({ response: CoinResponseDTO? ->
                     this@HomeViewModel.coins.value = response?.coins
-                }
-            ) { throwable: Throwable ->
-                Log.d("HomeViewModel", "Periodic Coin Request Failed : $throwable")
-            })
+            }) { throwable: Throwable ->
+                stopPeriodicCoinRequests()
+                errorHandler.handleError(throwable.message
+                    ?: getApplication<Application>().getString(R.string.error_general_message))
+            })*/
         /*MainApplication.serviceAdapterFactory().claimsServiceAdapter().getClaimsSummary(
             object : RequestListener<java.util.ArrayList<ClaimsGetSummaryResponseItem?>?>() {
                 fun onLoad(result: java.util.ArrayList<ClaimsGetSummaryResponseItem>) {
@@ -73,25 +73,5 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
                 }
             }
         )*/
-    }
-
-    fun getCoins() {
-
-        /*viewModelScope.launch(Dispatchers.IO) {
-            coinRepository.getCoins(completion = {
-                withContext(Dispatchers.Main) {
-                    this@HomeViewModel.coins.value = it
-                }
-            }, error = { errorResponseDTO ->
-                    withContext(Dispatchers.Main) {
-                        errorHandler?.handleError(
-                            errorResponseDTO?.errorMessageForUser
-                                ?: getApplication<Application>().getString(
-                                    R.string.error_general_message
-                                )
-                        )
-                    }
-                })
-        }*/
     }
 }

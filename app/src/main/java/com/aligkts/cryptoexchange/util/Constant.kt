@@ -7,6 +7,7 @@ package com.aligkts.cryptoexchange.util
 class Constant {
 
     companion object {
+        const val BASE_URL = "http://www.aslinda.net/"
         const val FIRST_SYMBOL = "FIRST_SYMBOL"
         const val SECOND_SYMBOL = "SECOND_SYMBOL"
         const val DETAIL_DATA = "DETAIL_DATA"

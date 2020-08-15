@@ -7,14 +7,15 @@ import com.aligkts.cryptoexchange.R
 import com.aligkts.cryptoexchange.databinding.ItemCoinDetailBinding
 import com.aligkts.cryptoexchange.extension.playAnimation
 import com.aligkts.cryptoexchange.model.dto.response.DItem
-import com.aligkts.cryptoexchange.ui.home.AutoUpdatableAdapter
+import com.aligkts.cryptoexchange.util.AutoUpdatableAdapter
 import kotlin.properties.Delegates
 
 /**
  * Created by Ali Göktaş on 14,August,2020
  */
 
-class CoinDetailAdapter : RecyclerView.Adapter<CoinDetailAdapter.CoinDetailViewHolder>(), AutoUpdatableAdapter {
+class CoinDetailAdapter : RecyclerView.Adapter<CoinDetailAdapter.CoinDetailViewHolder>(),
+    AutoUpdatableAdapter {
 
     var items: List<DItem> by Delegates.observable(emptyList()) {
             prop, old, new ->

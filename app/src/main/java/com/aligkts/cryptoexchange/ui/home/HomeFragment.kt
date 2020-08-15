@@ -5,6 +5,7 @@ import android.os.Handler
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,7 +28,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     private val handler = Handler()
     val runnable = {
-        observeCoins()
+        setupObserver()
         scheduleReload()
     }
 
@@ -58,7 +59,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         val coinItems = resources.getStringArray(R.array.CoinSpinnerItems)
         val spinnerAdapter = ArrayAdapter(
             requireActivity(),
-            android.R.layout.simple_spinner_item,
+            R.layout.item_spinner,
             coinItems)
         binding.spnFirstSymbol.adapter = spinnerAdapter
         if (viewModel.genericSecureRepository.contains(FIRST_SYMBOL)) {
@@ -107,14 +108,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
                 }
             }
+        val dividerItemDecoration = DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
+        val lineDividerDrawable = ResourcesCompat.getDrawable(resources, R.drawable.line_divider, null)
+        lineDividerDrawable?.let { drawable ->
+            dividerItemDecoration.setDrawable(drawable)
+        }
         binding.rvHome.apply {
             adapter = coinAdapter
-            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+            addItemDecoration(dividerItemDecoration)
         }
         runnable()
     }
 
-    private fun observeCoins() {
+    private fun setupObserver() {
         viewModel.coins.observeNonNull(this) {
             fillAdapter(it)
 
@@ -128,19 +134,5 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     private fun fillAdapter(coins: List<CoinItemDTO>) {
         coinAdapter.items = coins
     }
-
-    private fun setupCoinRecyclerview(coins: List<CoinItemDTO>) {
-        /*val coinAdapter = CoinAdapter {
-            val bundle = Bundle()
-            bundle.putParcelable(Constant.DETAIL_DATA, it)
-            findNavController().navigate(R.id.action_home_to_detail, bundle)
-        }
-        coinAdapter.submitList(coins)
-        binding.rvHome.apply {
-            adapter = coinAdapter
-            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
-        }*/
-    }
-
 
 }

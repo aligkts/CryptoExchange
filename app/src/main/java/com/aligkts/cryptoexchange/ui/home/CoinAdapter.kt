@@ -8,9 +8,11 @@ import com.aligkts.cryptoexchange.databinding.ItemCoinBinding
 import com.aligkts.cryptoexchange.extension.listen
 import com.aligkts.cryptoexchange.extension.playAnimation
 import com.aligkts.cryptoexchange.model.dto.response.CoinItemDTO
+import com.aligkts.cryptoexchange.util.AutoUpdatableAdapter
 import kotlin.properties.Delegates
 
-class CoinAdapter(private val onItemClick: (coinItem: CoinItemDTO) -> Unit) : RecyclerView.Adapter<CoinAdapter.CoinItemDTOViewHolder>(), AutoUpdatableAdapter {
+class CoinAdapter(private val onItemClick: (coinItem: CoinItemDTO) -> Unit) : RecyclerView.Adapter<CoinAdapter.CoinItemDTOViewHolder>(),
+    AutoUpdatableAdapter {
 
     var items: List<CoinItemDTO> by Delegates.observable(emptyList()) {
         prop, old, new ->
@@ -27,9 +29,7 @@ class CoinAdapter(private val onItemClick: (coinItem: CoinItemDTO) -> Unit) : Re
 
     override fun getItemCount() = items.size
 
-    override fun onBindViewHolder(holder: CoinItemDTOViewHolder, position: Int) {
-        holder.bind(items[position])
-    }
+    override fun onBindViewHolder(holder: CoinItemDTOViewHolder, position: Int) = holder.bind(items[position])
 
     class CoinItemDTOViewHolder(val binding: ItemCoinBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(model: CoinItemDTO) = with(binding) {

@@ -1,4 +1,4 @@
-package com.aligkts.cryptoexchange.ui.home
+package com.aligkts.cryptoexchange.util
 
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +20,6 @@ interface AutoUpdatableAdapter {
 
             override fun getNewListSize() = new.size
         })
-
         diff.dispatchUpdatesTo(this)
     }
 }
