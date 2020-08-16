@@ -1,7 +1,8 @@
 package com.aligkts.cryptoexchange.model.service
 
 import com.aligkts.cryptoexchange.model.dto.response.CoinDetailDTO
-import com.aligkts.cryptoexchange.model.dto.response.CoinResponseDTO
+import com.aligkts.cryptoexchange.model.dto.response.CoinGraphResponse
+import com.aligkts.cryptoexchange.model.dto.response.CoinResponse
 import com.aligkts.cryptoexchange.model.factory.RetrofitFactory
 import io.reactivex.Observable
 import retrofit2.http.GET
@@ -18,8 +19,11 @@ interface CoinService {
     }
 
     @GET("coin/list.php")
-    fun getCoins(): Observable<CoinResponseDTO>
+    fun getCoins(): Observable<CoinResponse>
 
     @GET("coin/detail.php")
     fun getCoinDetails(@Query("cod") cod: String): Observable<CoinDetailDTO>
+
+    @GET("coin/graph.php")
+    fun getCoinGraph(@Query("cod") cod: String): Observable<CoinGraphResponse>
 }
