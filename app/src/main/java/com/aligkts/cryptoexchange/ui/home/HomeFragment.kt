@@ -123,7 +123,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     private fun setupObserver() {
         viewModel.coins.observeNonNull(this) {
             fillAdapter(it)
-
         }
     }
 

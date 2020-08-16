@@ -1,7 +1,6 @@
 package com.aligkts.cryptoexchange.model.repository
 
 import com.aligkts.cryptoexchange.model.dto.response.CoinDetailDTO
-import com.aligkts.cryptoexchange.model.dto.response.CoinItemDTO
 import com.aligkts.cryptoexchange.model.dto.response.CoinResponseDTO
 import com.aligkts.cryptoexchange.model.service.ApiObserver
 import com.aligkts.cryptoexchange.model.service.CoinService
@@ -14,16 +13,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by Ali Göktaş on 11.08.2020
  */
-interface CoinRepository {
-    companion object {
-        val default: CoinRepository by lazy { DefaultCoinRepository() }
-    }
-}
-
-class DefaultCoinRepository(val coinService: CoinService = CoinService.default) :
-    CoinRepository {
-    lateinit var coins: List<CoinItemDTO>
-    lateinit var coinDetail: CoinDetailDTO
+class DefaultCoinRepository(private val coinService: CoinService = CoinService.default) {
 
     private val compositeDisposable by lazy { CompositeDisposable() }
     val rxInterval by lazy { ObservableInterval.interval(0, 2, TimeUnit.SECONDS) }
@@ -69,20 +59,5 @@ class DefaultCoinRepository(val coinService: CoinService = CoinService.default) 
     fun clearDisposable() {
         compositeDisposable.clear()
     }
-
-    /*override suspend fun getCoins(
-        completion: suspend (ArrayList<CoinItemDTO>) -> Unit,
-        error: suspend (ErrorResponseDTO?) -> Unit
-    ) {
-
-        when(val serviceResult = makeServiceRequest { coinService.getCoinsOld() }) {
-            is ServiceResult.Success -> {
-                coins = serviceResult.body.coins
-                completion(serviceResult.body.coins)
-            }
-            is ServiceResult.Error -> error(serviceResult.errorDTO)
-            is ServiceResult.UnknownError -> error(null)
-        }
-    }*/
 
 }

@@ -18,12 +18,6 @@ interface CoinService {
     }
 
     @GET("coin/list.php")
-    fun getCoinsOld(): CoinResponseDTO
-
-    @GET("coin/detail.php")
-    fun getCoinDetailsOld(@Query("cod") cod: String): CoinDetailDTO
-
-    @GET("coin/list.php")
     fun getCoins(): Observable<CoinResponseDTO>
 
     @GET("coin/detail.php")
