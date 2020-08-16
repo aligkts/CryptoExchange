@@ -19,30 +19,34 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorLightGrey"
             android:orientation="horizontal"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             android:weightSum="4">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/txt_symbol"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/symbol"
+                android:layout_weight="2"
                 android:gravity="center"
-                android:layout_weight="2"/>
+                android:text="@string/symbol"
+                android:textColor="@color/colorWhite" />
 
             <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/spn_first_symbol"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:popupBackground="@color/colorDarkGrey"
+                android:spinnerMode="dropdown" />
 
             <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/spn_second_symbol"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:popupBackground="@color/colorDarkGrey"
+                android:spinnerMode="dropdown" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

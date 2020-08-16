@@ -1,9 +1,11 @@
 package com.aligkts.cryptoexchange.ui.home
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,76 +26,112 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     override fun getFragmentView() = R.layout.fragment_home
 
+    private val handler = Handler()
+    val runnable = {
+        setupObserver()
+        scheduleReload()
+    }
+
+    private val coinAdapter by lazy {  CoinAdapter {
+        val bundle = Bundle()
+        bundle.putParcelable(Constant.DETAIL_DATA, it)
+        findNavController().navigate(R.id.action_home_to_detail, bundle)
+    }}
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as MainActivity).showBottomNavigationView()
         (activity as MainActivity).supportActionBar?.title = getString(R.string.app_name)
-        viewModel.getCoins()
-        registerObservers()
-        initSpinners()
+        initUI()
     }
 
-    private fun initSpinners() {
+    override fun onResume() {
+        super.onResume()
+        viewModel.startPeriodicCoinRequests()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.stopPeriodicCoinRequests()
+    }
+
+    private fun initUI() {
         val coinItems = resources.getStringArray(R.array.CoinSpinnerItems)
-        val spinnerAdapter = ArrayAdapter(requireActivity(),
-            android.R.layout.simple_spinner_item,
+        val spinnerAdapter = ArrayAdapter(
+            requireActivity(),
+            R.layout.item_spinner,
             coinItems)
         binding.spnFirstSymbol.adapter = spinnerAdapter
         if (viewModel.genericSecureRepository.contains(FIRST_SYMBOL)) {
-            binding.spnFirstSymbol.setSelection(viewModel.genericSecureRepository.getString(FIRST_SYMBOL)!!.getCoinSpinnerSelectedIndex())
+            binding.spnFirstSymbol.setSelection(
+                viewModel.genericSecureRepository.getString(FIRST_SYMBOL)!!.getCoinSpinnerSelectedIndex()
+            )
         }
-        binding.spnFirstSymbol.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                viewModel.genericSecureRepository.put(FIRST_SYMBOL, coinItems[position])
-                binding.rvHome.adapter?.notifyDataSetChanged()
-            }
+        binding.spnFirstSymbol.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    viewModel.genericSecureRepository.put(FIRST_SYMBOL, coinItems[position])
+                    binding.rvHome.adapter?.notifyDataSetChanged()
+                }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
 
+                }
             }
-        }
 
         binding.spnSecondSymbol.adapter = spinnerAdapter
         if (viewModel.genericSecureRepository.contains(SECOND_SYMBOL)) {
-            binding.spnSecondSymbol.setSelection(viewModel.genericSecureRepository.getString(SECOND_SYMBOL)!!.getCoinSpinnerSelectedIndex())
+            binding.spnSecondSymbol.setSelection(
+                viewModel.genericSecureRepository.getString(
+                    SECOND_SYMBOL
+                )!!.getCoinSpinnerSelectedIndex()
+            )
         }
-        binding.spnSecondSymbol.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                viewModel.genericSecureRepository.put(SECOND_SYMBOL, coinItems[position])
-                binding.rvHome.adapter?.notifyDataSetChanged()
+        binding.spnSecondSymbol.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    viewModel.genericSecureRepository.put(SECOND_SYMBOL, coinItems[position])
+                    binding.rvHome.adapter?.notifyDataSetChanged()
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                }
             }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
+        val dividerItemDecoration = DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
+        val lineDividerDrawable = ResourcesCompat.getDrawable(resources, R.drawable.line_divider, null)
+        lineDividerDrawable?.let { drawable ->
+            dividerItemDecoration.setDrawable(drawable)
         }
-    }
-
-    private fun registerObservers() {
-        viewModel.coins.observeNonNull(this) {
-            setupCoinRecyclerview(it)
-        }
-    }
-
-    private fun setupCoinRecyclerview(coins: List<CoinItemDTO>) {
-        val coinAdapter = CoinAdapter {
-            val bundle = Bundle()
-            bundle.putParcelable(Constant.DETAIL_DATA, it)
-            findNavController().navigate(R.id.action_home_to_detail, bundle)
-        }
-        coinAdapter.submitList(coins)
         binding.rvHome.apply {
             adapter = coinAdapter
-            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+            addItemDecoration(dividerItemDecoration)
+        }
+        runnable()
+    }
+
+    private fun setupObserver() {
+        viewModel.coins.observeNonNull(this) {
+            fillAdapter(it)
         }
     }
 
-    /*fun loadData() = CoroutineScope(Dispatchers.Default).launch {
-        val task = async(Dispatchers.IO) {
-            get_top_books()
-        }
-        viewModel.coins.value = task.await()
-        binding.rvHome.adapter?.notifyDataSetChanged()
-    }*/
+    private fun scheduleReload() {
+        handler.postDelayed(runnable, 2000)
+    }
+
+    private fun fillAdapter(coins: List<CoinItemDTO>) {
+        coinAdapter.items = coins
+    }
 
 }
