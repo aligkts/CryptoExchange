@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class CoinResponseDTO(
+data class CoinResponse(
     @SerializedName("l")
     val coins: ArrayList<CoinItemDTO>,
     @SerializedName("z")

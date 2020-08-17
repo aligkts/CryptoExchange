@@ -4,8 +4,7 @@ import io.reactivex.Observer
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
-abstract class ApiObserver<T> constructor(private val compositeDisposable: CompositeDisposable):
-    Observer<T> {
+abstract class ApiObserver<T> constructor(private val compositeDisposable: CompositeDisposable) : Observer<T> {
 
     override fun onComplete() {
 

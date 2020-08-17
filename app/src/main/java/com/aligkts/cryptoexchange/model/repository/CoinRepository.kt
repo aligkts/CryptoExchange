@@ -1,7 +1,8 @@
 package com.aligkts.cryptoexchange.model.repository
 
 import com.aligkts.cryptoexchange.model.dto.response.CoinDetailDTO
-import com.aligkts.cryptoexchange.model.dto.response.CoinResponseDTO
+import com.aligkts.cryptoexchange.model.dto.response.CoinGraphResponse
+import com.aligkts.cryptoexchange.model.dto.response.CoinResponse
 import com.aligkts.cryptoexchange.model.service.ApiObserver
 import com.aligkts.cryptoexchange.model.service.CoinService
 import com.aligkts.cryptoexchange.util.RxUtil.applyIOAndUIScheduler
@@ -18,14 +19,14 @@ class DefaultCoinRepository(private val coinService: CoinService = CoinService.d
     private val compositeDisposable by lazy { CompositeDisposable() }
     val rxInterval by lazy { ObservableInterval.interval(0, 2, TimeUnit.SECONDS) }
 
-    fun startPeriodicCoinRequest(onResult: (CoinResponseDTO) -> Unit, onError: (Throwable) -> Unit) {
+    fun startPeriodicCoinRequest(onResult: (CoinResponse) -> Unit, onError: (Throwable) -> Unit) {
         compositeDisposable.add(rxInterval
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 coinService.getCoins()
                     .compose(applyIOAndUIScheduler())
-                    .subscribe(object : ApiObserver<CoinResponseDTO>(compositeDisposable) {
-                        override fun onApiSuccess(data: CoinResponseDTO) {
+                    .subscribe(object : ApiObserver<CoinResponse>(compositeDisposable) {
+                        override fun onApiSuccess(data: CoinResponse) {
                             onResult(data)
                         }
 
@@ -36,9 +37,10 @@ class DefaultCoinRepository(private val coinService: CoinService = CoinService.d
             })
     }
 
-    fun startPeriodicCoinDetailRequest(code: String,
-                                       onResult: (CoinDetailDTO) -> Unit,
-                                       onError: (Throwable) -> Unit) {
+    fun startPeriodicCoinDetailRequest(
+        code: String,
+        onResult: (CoinDetailDTO) -> Unit,
+        onError: (Throwable) -> Unit) {
         compositeDisposable.add(rxInterval
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
@@ -54,6 +56,20 @@ class DefaultCoinRepository(private val coinService: CoinService = CoinService.d
                         }
                     })
             })
+    }
+
+    fun requestCoinGraph(
+        code: String,
+        onResult: (CoinGraphResponse) -> Unit,
+        onError: (Throwable) -> Unit) {
+        compositeDisposable.add(
+            coinService.getCoinGraph(code)
+                .compose(applyIOAndUIScheduler())
+                .subscribe({ graphData ->
+                    onResult(graphData)
+                }, { throwable ->
+                    onError(throwable)
+                }))
     }
 
     fun clearDisposable() {
