@@ -11,6 +11,9 @@ import com.aligkts.cryptoexchange.model.dto.response.CoinItemDTO
 import com.aligkts.cryptoexchange.util.AutoUpdatableAdapter
 import kotlin.properties.Delegates
 
+/**
+ * Created by Ali Göktaş on 11,August,2020
+ */
 class CoinAdapter(private val onItemClick: (coinItem: CoinItemDTO) -> Unit) : RecyclerView.Adapter<CoinAdapter.CoinItemDTOViewHolder>(),
     AutoUpdatableAdapter {
 

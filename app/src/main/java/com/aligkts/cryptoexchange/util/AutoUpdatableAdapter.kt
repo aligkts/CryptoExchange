@@ -3,6 +3,10 @@ package com.aligkts.cryptoexchange.util
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
+/**
+ * Created by Ali Göktaş on 12,August,2020
+ */
+
 interface AutoUpdatableAdapter {
 
     fun <T> RecyclerView.Adapter<*>.autoNotify(old: List<T>,
