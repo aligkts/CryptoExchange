@@ -8,6 +8,7 @@ import com.aligkts.cryptoexchange.model.dto.response.CoinGraphResponse
 import com.aligkts.cryptoexchange.model.dto.response.DItem
 import com.aligkts.cryptoexchange.model.repository.DefaultCoinRepository
 import com.aligkts.cryptoexchange.model.repository.GenericSecureRepository
+import com.aligkts.cryptoexchange.util.Constant
 
 /**
  * Created by Ali Göktaş on 14,August,2020
@@ -51,12 +52,18 @@ class DetailViewModel(application: Application) : BaseViewModel(application) {
     }
 
     fun addFavoriteCoin(id: String) {
-
+        val favoriteList = getFavoriteListFromPrefs()
+        favoriteList.add(id)
+        genericSecureRepository.putStringList(Constant.FAVORITES_KEY, favoriteList)
     }
 
     fun deleteFavoriteCoin(id: String) {
-
+        val favoriteList = getFavoriteListFromPrefs()
+        favoriteList.remove(id)
+        genericSecureRepository.putStringList(Constant.FAVORITES_KEY, favoriteList)
     }
+
+    private fun getFavoriteListFromPrefs(): ArrayList<String> = genericSecureRepository.getStringList(Constant.FAVORITES_KEY)
 
 
 }

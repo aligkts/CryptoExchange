@@ -37,8 +37,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     private val coinAdapter by lazy {  CoinAdapter {
         val bundle = Bundle()
-        //TODO if it is in favorite
-        it.isFavorite = true
+        it.isFavorite = viewModel.checkWhetherClickedCoinFavorited(it.id)
         bundle.putParcelable(Constant.DETAIL_DATA, it)
         findNavController().navigate(R.id.action_home_to_detail, bundle)
     }}
@@ -47,6 +46,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         super.onViewCreated(view, savedInstanceState)
         (activity as MainActivity).showBottomNavigationView()
         (activity as MainActivity).supportActionBar?.title = getString(R.string.app_name)
+        arguments?.getBoolean(Constant.OPEN_FAVORITES)?.let {
+            viewModel.filterFavorites = it
+        }
         initUI()
     }
 

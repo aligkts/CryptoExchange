@@ -4,6 +4,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
+import com.aligkts.cryptoexchange.util.Constant
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 
 /**
  * Created by Ali Göktaş on 11.08.2020
@@ -46,6 +50,10 @@ class SecureSharedPref(context: Context) : GenericSecureRepository {
         sharedPreferences.edit().putFloat(key, value).apply()
     }
 
+    override fun putStringList(key: String, value: ArrayList<String>) {
+        sharedPreferences.edit().putString(key, GsonBuilder().create().toJson(value)).apply()
+    }
+
     override fun getString(key: String): String? {
         return sharedPreferences.getString(key, null)
     }
@@ -67,6 +75,16 @@ class SecureSharedPref(context: Context) : GenericSecureRepository {
 
     override fun getFloat(key: String): Float? {
         return if (sharedPreferences.contains(key)) sharedPreferences.getFloat(key, 0f) else null
+    }
+
+    override fun getStringList(key: String): ArrayList<String> {
+        val type = object : TypeToken<ArrayList<String>>(){}.type
+        val value = sharedPreferences.getString(Constant.FAVORITES_KEY, null)
+        return try {
+            Gson().fromJson(value, type) as ArrayList<String>
+        } catch (e: Exception) {
+            arrayListOf()
+        }
     }
 
     override fun remove(key: String) {

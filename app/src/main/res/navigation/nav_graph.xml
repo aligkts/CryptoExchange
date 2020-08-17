@@ -18,11 +18,7 @@
             android:name="showOnlyFavorites"
             android:defaultValue="false" />
     </fragment>
-    <fragment
-        android:id="@+id/navigation_favorites"
-        android:name="com.aligkts.cryptoexchange.ui.favorites.FavoritesFragment"
-        android:label="fragment_favorites"
-        tools:layout="@layout/fragment_favorites" />
+
     <fragment
         android:id="@+id/navigation_detail"
         android:name="com.aligkts.cryptoexchange.ui.detail.DetailFragment"

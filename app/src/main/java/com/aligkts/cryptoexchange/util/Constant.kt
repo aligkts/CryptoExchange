@@ -11,7 +11,8 @@ class Constant {
         const val FIRST_SYMBOL = "FIRST_SYMBOL"
         const val SECOND_SYMBOL = "SECOND_SYMBOL"
         const val DETAIL_DATA = "DETAIL_DATA"
-        const val FAVORITES = "FAVORITES"
+        const val FAVORITES_KEY = "FAVORITES"
+        const val OPEN_FAVORITES = "OPEN_FAVORITES"
     }
 
 }
