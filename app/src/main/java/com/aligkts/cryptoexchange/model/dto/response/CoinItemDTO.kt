@@ -8,6 +8,10 @@ import com.aligkts.cryptoexchange.util.Constant
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
+/**
+ * Created by Ali Göktaş on 12,August,2020
+ */
+
 @Parcelize
 data class CoinItemDTO(
     @SerializedName("buy")
@@ -35,7 +39,9 @@ data class CoinItemDTO(
     @SerializedName("sel")
     val sell: String,
     @SerializedName("tke")
-    val id: String
+    val id: String,
+    @SerializedName("isFavorite")
+    var isFavorite: Boolean
 ) : Parcelable {
 
     fun getFirstSymbolData(): String {

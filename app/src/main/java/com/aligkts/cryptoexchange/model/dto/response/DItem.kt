@@ -1,10 +1,12 @@
 package com.aligkts.cryptoexchange.model.dto.response
 
 import android.os.Parcelable
-import com.aligkts.cryptoexchange.R
-import com.aligkts.cryptoexchange.base.RecyclerViewItem
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
+
+/**
+ * Created by Ali Göktaş on 12,August,2020
+ */
 
 @Parcelize
 data class DItem(
@@ -20,4 +22,4 @@ data class DItem(
 
 	@field:SerializedName("desc")
 	val desc: String? = null
-) : Parcelable, RecyclerViewItem(R.layout.item_coin_detail)
+) : Parcelable

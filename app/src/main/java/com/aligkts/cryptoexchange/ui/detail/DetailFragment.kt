@@ -7,7 +7,6 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,6 +28,10 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IFillFormatter
 
+/**
+ * Created by Ali Göktaş on 14,August,2020
+ */
+
 class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
 
     override fun getViewModel() = DetailViewModel::class.java
@@ -42,6 +45,8 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
     }
 
     lateinit var code: String
+    lateinit var coin: CoinItemDTO
+
     private val coinDetailAdapter by lazy { CoinDetailAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,12 +56,12 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val coin = arguments?.getParcelable<CoinItemDTO>(Constant.DETAIL_DATA)
-        (activity as MainActivity).hideBottomNavigationView()
-        (activity as MainActivity).supportActionBar?.title = coin?.code
-        coin?.let {
-            code = it.code
+        arguments?.getParcelable<CoinItemDTO>(Constant.DETAIL_DATA)?.let {
+            coin = it
         }
+        (activity as MainActivity).hideBottomNavigationView()
+        (activity as MainActivity).supportActionBar?.title = coin.code
+        code = coin.code
         initUI()
         viewModel.getCoinGraphData(code)
     }
@@ -165,13 +170,26 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        return inflater.inflate(R.menu.menu_favorite, menu)
+        inflater.inflate(R.menu.menu_favorite, menu)
+        if (coin.isFavorite) {
+            menu.findItem(R.id.action_favorite).icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_favorite_selected)
+        } else {
+            menu.findItem(R.id.action_favorite).icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_favorite_unselected)
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_favorite -> {
-                Toast.makeText(context, "Favorite clicked", Toast.LENGTH_SHORT).show()
+                if (coin.isFavorite) {
+                    item.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_favorite_unselected)
+                    coin.isFavorite = false
+                    viewModel.deleteFavoriteCoin(coin.id)
+                } else {
+                    item.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_favorite_selected)
+                    coin.isFavorite = true
+                    viewModel.addFavoriteCoin(coin.id)
+                }
             }
         }
         return super.onOptionsItemSelected(item)

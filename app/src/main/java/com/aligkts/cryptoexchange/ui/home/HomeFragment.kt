@@ -20,6 +20,9 @@ import com.aligkts.cryptoexchange.util.Constant
 import com.aligkts.cryptoexchange.util.Constant.Companion.FIRST_SYMBOL
 import com.aligkts.cryptoexchange.util.Constant.Companion.SECOND_SYMBOL
 
+/**
+ * Created by Ali Göktaş on 11,August,2020
+ */
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     override fun getViewModel() = HomeViewModel::class.java
@@ -34,6 +37,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     private val coinAdapter by lazy {  CoinAdapter {
         val bundle = Bundle()
+        //TODO if it is in favorite
+        it.isFavorite = true
         bundle.putParcelable(Constant.DETAIL_DATA, it)
         findNavController().navigate(R.id.action_home_to_detail, bundle)
     }}

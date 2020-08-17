@@ -8,6 +8,9 @@ import com.aligkts.cryptoexchange.model.dto.response.CoinItemDTO
 import com.aligkts.cryptoexchange.model.repository.DefaultCoinRepository
 import com.aligkts.cryptoexchange.model.repository.GenericSecureRepository
 
+/**
+ * Created by Ali Göktaş on 11,August,2020
+ */
 class HomeViewModel(application: Application) : BaseViewModel(application) {
 
     val coins = MutableLiveData<ArrayList<CoinItemDTO>>()

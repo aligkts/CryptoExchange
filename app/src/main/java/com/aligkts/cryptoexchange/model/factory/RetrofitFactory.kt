@@ -8,6 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 /**
  * Created by Ali Göktaş on 11.08.2020
  */
+
 class RetrofitFactory {
     companion object {
         val defaultRetrofit: Retrofit by lazy {

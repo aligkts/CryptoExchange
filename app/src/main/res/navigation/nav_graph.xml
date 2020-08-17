@@ -13,6 +13,10 @@
         <action
             android:id="@+id/action_home_to_detail"
             app:destination="@id/navigation_detail" />
+
+        <argument
+            android:name="showOnlyFavorites"
+            android:defaultValue="false" />
     </fragment>
     <fragment
         android:id="@+id/navigation_favorites"
