@@ -1,73 +1,79 @@
 package com.aligkts.cryptoexchange.model.repository
 
-import com.aligkts.cryptoexchange.model.dto.response.CoinItemDTO
-import com.aligkts.cryptoexchange.model.dto.response.ErrorResponseDTO
+import com.aligkts.cryptoexchange.model.dto.response.CoinDetailDTO
+import com.aligkts.cryptoexchange.model.dto.response.CoinGraphResponse
+import com.aligkts.cryptoexchange.model.dto.response.CoinResponse
+import com.aligkts.cryptoexchange.model.service.ApiObserver
 import com.aligkts.cryptoexchange.model.service.CoinService
-import com.aligkts.cryptoexchange.model.service.ServiceResult
-import com.aligkts.cryptoexchange.model.service.makeServiceRequest
+import com.aligkts.cryptoexchange.util.RxUtil.applyIOAndUIScheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.internal.operators.observable.ObservableInterval
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by Ali Göktaş on 11.08.2020
  */
-interface CoinRepository {
-    companion object {
-        val default: CoinRepository by lazy { DefaultCoinRepository() }
+class DefaultCoinRepository(private val coinService: CoinService = CoinService.default) {
+
+    private val compositeDisposable by lazy { CompositeDisposable() }
+    val rxInterval by lazy { ObservableInterval.interval(0, 2, TimeUnit.SECONDS) }
+
+    fun startPeriodicCoinRequest(onResult: (CoinResponse) -> Unit, onError: (Throwable) -> Unit) {
+        compositeDisposable.add(rxInterval
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                coinService.getCoins()
+                    .compose(applyIOAndUIScheduler())
+                    .subscribe(object : ApiObserver<CoinResponse>(compositeDisposable) {
+                        override fun onApiSuccess(data: CoinResponse) {
+                            onResult(data)
+                        }
+
+                        override fun onApiError(er: Throwable) {
+                            onError(er)
+                        }
+                    })
+            })
     }
 
-    suspend fun getCoins(
-        completion: suspend (ArrayList<CoinItemDTO>) -> Unit,
-        error: suspend (ErrorResponseDTO?) -> Unit
-    )
-}
+    fun startPeriodicCoinDetailRequest(
+        code: String,
+        onResult: (CoinDetailDTO) -> Unit,
+        onError: (Throwable) -> Unit) {
+        compositeDisposable.add(rxInterval
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                coinService.getCoinDetails(code)
+                    .compose(applyIOAndUIScheduler())
+                    .subscribe(object : ApiObserver<CoinDetailDTO>(compositeDisposable) {
+                        override fun onApiSuccess(data: CoinDetailDTO) {
+                            onResult(data)
+                        }
 
-class DefaultCoinRepository(val coinService: CoinService = CoinService.default) :
-    CoinRepository {
-    private var coins: List<CoinItemDTO>?= null
-
-    override suspend fun getCoins(
-        completion: suspend (ArrayList<CoinItemDTO>) -> Unit,
-        error: suspend (ErrorResponseDTO?) -> Unit
-    ) {
-
-        when(val serviceResult = makeServiceRequest { coinService.getCoins() }) {
-            is ServiceResult.Success -> {
-                coins = serviceResult.body.coins
-                completion(serviceResult.body.coins)
-            }
-            is ServiceResult.Error -> error(serviceResult.errorDTO)
-            is ServiceResult.UnknownError -> error(null)
-        }
-    }
-    /*private var announcements: Array<Announcement>? = null
-
-    override suspend fun getAnnouncements(
-        completion: suspend (Array<Announcement>) -> Unit,
-        error: suspend (ErrorResponseDTO?) -> Unit
-    ) {
-        val serviceResult = makeServiceRequest { announcementService.getAnnouncements() }
-
-        when (serviceResult) {
-            is ServiceResult.Success -> {
-                announcements = serviceResult.body.announcements
-                completion(serviceResult.body.announcements)
-            }
-            is ServiceResult.Error -> error(serviceResult.errorDTO)
-            is ServiceResult.UnknownError -> error(null)
-        }
+                        override fun onApiError(er: Throwable) {
+                            onError(er)
+                        }
+                    })
+            })
     }
 
-    override suspend fun getAnnouncement(
-        id: Int,
-        completion: suspend (Announcement) -> Unit,
-        error: suspend (ErrorResponseDTO?) -> Unit
-    ) {
-        announcements?.filter { announcement -> announcement.id == id }?.let { result ->
-            if (result.isEmpty()) {
-                error(null)
-                return
-            }
+    fun requestCoinGraph(
+        code: String,
+        onResult: (CoinGraphResponse) -> Unit,
+        onError: (Throwable) -> Unit) {
+        compositeDisposable.add(
+            coinService.getCoinGraph(code)
+                .compose(applyIOAndUIScheduler())
+                .subscribe({ graphData ->
+                    onResult(graphData)
+                }, { throwable ->
+                    onError(throwable)
+                }))
+    }
 
-            completion(result[0])
-        } ?: kotlin.run { error(null) }
-    }*/
+    fun clearDisposable() {
+        compositeDisposable.clear()
+    }
+
 }

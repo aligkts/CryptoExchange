@@ -1,14 +1,32 @@
 <resources>
-    <string name="app_name">Crypto Exchange</string>
+    <string name="app_name">Kripto Borsa</string>
 
-    <string name="done">Done</string>
-    <string name="cancel">Cancel</string>
-    <string name="please_wait">Please Wait</string>
+    <string name="done">Tamam</string>
+    <string name="cancel">İptal</string>
+    <string name="please_wait">Lütfen bekleyiniz</string>
 
-    <string name="bottom_item_home">Home</string>
-    <string name="bottom_item_favorites">Favorites</string>
+    <string name="bottom_item_home">Sayfam</string>
+    <string name="bottom_item_favorites">Favorilerim</string>
 
-    <string name="error_dialog_title">Error</string>
-    <string name="error_general_message">Error occured. Please try again later.</string>
+    <string name="error_dialog_title">Hata</string>
+    <string name="error_general_message">Hata oluştu. Lütfen tekrar deneyiniz.</string>
+    <string name="symbol">Sembol</string>
+    <string name="title_last">Son</string>
+    <string name="title_buy">Alış</string>
+    <string name="title_sell">Satış</string>
+    <string name="title_low">G. Düşük</string>
+    <string name="title_high">G. Yüksek</string>
+    <string name="title_diff">Fark</string>
+    <string name="title_diff_percentage">%Fark</string>
 
+    <string-array name="CoinSpinnerItems">
+        <item>Alış</item>
+        <item>Fark</item>
+        <item>Yüksek</item>
+        <item>Son</item>
+        <item>Düşük</item>
+        <item>Kapanış</item>
+        <item>%Fark</item>
+        <item>Satış</item>
+    </string-array>
 </resources>

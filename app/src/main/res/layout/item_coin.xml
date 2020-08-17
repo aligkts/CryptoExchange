@@ -10,11 +10,12 @@
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/container_coin_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/colorPrimaryDark"
-        android:weightSum="4">
+        android:weightSum="4"
+        tools:background="@color/colorDarkGrey">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
@@ -26,21 +27,34 @@
                 android:id="@+id/txt_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:maxLines="1"
+                android:layout_margin="@dimen/dimen_medium"
+                android:maxLines="2"
                 android:text="@{item.code}"
-                android:textSize="15sp"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_size_medium"
                 tools:text="ANSUSD:BFX" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/txt_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:maxLines="1"
+                android:layout_margin="@dimen/dimen_medium"
+                android:maxLines="2"
                 android:text="@{item.description}"
-                android:textSize="12sp"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_size_small"
                 tools:text="NEO Amerikan Doları" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txt_update_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_medium"
+                android:maxLines="2"
+                android:text="@{item.hour}"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_size_small"
+                tools:text="18:25:11" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -48,9 +62,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="16dp"
+            android:layout_margin="@dimen/dimen_large"
             android:layout_weight="1"
-            android:text="@{item.buy}"
+            android:gravity="center"
+            android:text="@{item.getFirstSymbolData()}"
+            android:textColor="@color/colorWhite"
             tools:text="7,272" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -59,7 +75,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:text="@{item.sell}"
+            android:gravity="center"
+            android:text="@{item.getSecondSymbolData()}"
+            android:textColor="@color/colorWhite"
             tools:text="0,0011" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>

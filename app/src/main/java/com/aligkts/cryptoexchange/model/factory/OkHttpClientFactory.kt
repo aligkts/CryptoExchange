@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by Ali Göktaş on 11.08.2020
  */
+
 class OkHttpClientFactory {
     companion object {
         val defaultClient: OkHttpClient by lazy {
