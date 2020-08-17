@@ -37,11 +37,7 @@ class DetailViewModel(application: Application) : BaseViewModel(application) {
             this@DetailViewModel.coinGraphData.value = it
         }, { throwable ->
             contentLoading.value = false
-
-            errorHandler.handleError(
-                throwable.message
-                    ?: getApplication<Application>().getString(R.string.error_general_message)
-            )
+            errorHandler.handleError(throwable.message ?: getApplication<Application>().getString(R.string.error_general_message))
         })
     }
 

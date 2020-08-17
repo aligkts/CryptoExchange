@@ -40,8 +40,7 @@ class DefaultCoinRepository(private val coinService: CoinService = CoinService.d
     fun startPeriodicCoinDetailRequest(
         code: String,
         onResult: (CoinDetailDTO) -> Unit,
-        onError: (Throwable) -> Unit
-    ) {
+        onError: (Throwable) -> Unit) {
         compositeDisposable.add(rxInterval
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
@@ -62,23 +61,15 @@ class DefaultCoinRepository(private val coinService: CoinService = CoinService.d
     fun requestCoinGraph(
         code: String,
         onResult: (CoinGraphResponse) -> Unit,
-        onError: (Throwable) -> Unit
-    ) {
-        compositeDisposable.add(rxInterval
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                coinService.getCoinGraph(code)
-                    .compose(applyIOAndUIScheduler())
-                    .subscribe(object : ApiObserver<CoinGraphResponse>(compositeDisposable) {
-                        override fun onApiSuccess(data: CoinGraphResponse) {
-                            onResult(data)
-                        }
-
-                        override fun onApiError(er: Throwable) {
-                            onError(er)
-                        }
-                    })
-            })
+        onError: (Throwable) -> Unit) {
+        compositeDisposable.add(
+            coinService.getCoinGraph(code)
+                .compose(applyIOAndUIScheduler())
+                .subscribe({ graphData ->
+                    onResult(graphData)
+                }, { throwable ->
+                    onError(throwable)
+                }))
     }
 
     fun clearDisposable() {

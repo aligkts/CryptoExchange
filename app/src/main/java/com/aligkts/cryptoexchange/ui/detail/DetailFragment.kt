@@ -37,7 +37,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
 
     private val handler = Handler()
     val runnable = {
-        observeCoinDetails()
+        registerObservers()
         scheduleReload()
     }
 
@@ -100,7 +100,6 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
         binding.chartCoinDetail.legend.isEnabled = false
         binding.chartCoinDetail.animateXY(2000, 2000)
         binding.chartCoinDetail.invalidate()
-        //TODO request observable olsa bile grapha basmıyoruz
     }
 
     private fun setGraphData(graphData: CoinGraphResponse) {
@@ -147,7 +146,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
         viewModel.stopPeriodicRequest()
     }
 
-    private fun observeCoinDetails() {
+    private fun registerObservers() {
         viewModel.coinDetail.observeNonNull(this) {
             fillAdapter(it)
         }
